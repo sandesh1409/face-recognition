@@ -20,32 +20,6 @@ for i in range(15):
         exps_image[i,:,m:(m+1)] = img.reshape(64*64,1);
         m += 1
         
-#sub_images = np.zeros((64*64,15));
-#for k in range(15):
-#    X = exps_image[k,:,:];
-#    u = np.mean(X, axis=0);
-#    s = np.std(X, axis=0);
-#    for l in range(10):
-#        X[:,l] = (X[:,l] - u[l])/s[l];
-#    X_norm = X;
-#    covX = np.cov(X_norm.T, bias=True);
-#    D, V = np.linalg.eig(covX);
-#    sub_images[:,k:k+1] = np.dot(X_norm,V[:,0:1]);
-    
-    
-count = 0;
-#for i in range(15):
-#    for j in range (10):
-#        matchM = exps_image[i,:,j];
-#        dist = np.zeros((1,15));
-#        for k in range(15):
-#            dist[0,k] = np.linalg.norm(sub_images[:,k] - matchM);
-#        I = np.argmin(dist);
-#        if I == i:
-#            count += 1;
-
-
-
 sub_images = np.zeros((64*64,15));
 for k in range(15):
     X = exps_image[k,:,:];
@@ -55,21 +29,22 @@ for k in range(15):
         X[:,l] = (X[:,l] - u[l])/s[l];
     X_norm = X;
     covX = np.cov(X_norm.T, bias=True);
-    D, V = np.linalg.eig(covX)
-    per_var = (sum(D[0:1])/sum(D))*100
-    print(per_var)
+    D, V = np.linalg.eig(covX);
     sub_images[:,k:k+1] = np.dot(X_norm,V[:,0:1]);
-
-for j in range (10):
-        matchM = exps_image[0,:,j];
-        print(matchM)
+    
+    
+count = 0;
+for i in range(15):
+    for j in range (10):
+        matchM = exps_image[i,:,j];
         dist = np.zeros((1,15));
         for k in range(15):
-            dist[0,k] = np.linalg.norm(sub_images[:,k] - matchM);  
+            dist[0,k] = np.linalg.norm(sub_images[:,k] - matchM);
         I = np.argmin(dist);
-        print(I)
-        if I == 0:
+        if I == i:
             count += 1;
+
+
 
 
 
